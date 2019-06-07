@@ -1,6 +1,6 @@
 {
   "name": "unform-material-ui",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Italo Izaac <italoiz.dev@gmail.com>",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -36,6 +36,7 @@
   "scripts": {
     "dev": "npm-run-all -p dev:*",
     "dev:start": "rollup -c -w",
+    "dev:example": "cd example && npm run start",
     "prebuild": "rimraf dist",
     "build": "rollup -c",
     "test": "jest"
@@ -45,9 +46,14 @@
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",
+    "@material-ui/core": "^4.0.2",
+    "@rocketseat/unform": "^1.4.0",
+    "@testing-library/react": "^8.0.1",
+    "@types/jest": "^24.0.13",
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
     "@types/react-test-renderer": "^16.8.1",
+    "@types/yup": "^0.26.14",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "commitlint-config-rocketseat": "^0.0.1",
@@ -57,6 +63,7 @@
     "eslint-config-prettier": "^4.3.0",
     "eslint-import-resolver-typescript": "^1.1.1",
     "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-import-helpers": "^0.1.4",
     "eslint-plugin-jest": "^22.6.4",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-prettier": "^3.1.0",
@@ -71,7 +78,6 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
-    "react-testing-library": "^8.0.1",
     "rimraf": "^2.6.3",
     "rollup": "^1.14.3",
     "rollup-plugin-babel": "^4.3.2",
@@ -82,9 +88,12 @@
     "rollup-plugin-typescript2": "^0.21.1",
     "rollup-plugin-url": "^2.2.1",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.1"
+    "typescript": "^3.5.1",
+    "yup": "^0.27.0"
   },
   "peerDependencies": {
+    "@material-ui/core": ">= 4.0.2",
+    "@rocketseat/unform": ">= 1.4.0",
     "react": ">= 16.8.0",
     "react-dom": ">= 16.8.0"
   }
