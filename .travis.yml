@@ -1,0 +1,29 @@
+language: node_js
+
+node_js:
+  - '10'
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+install:
+  - yarn
+
+script:
+  - commitlint-travis
+  - yarn coveralls
+
+before_deploy:
+  - yarn build
+
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email: $EMAIL
+  api_key:
+    secure: $API_KEY
+  on:
+    tags: true
+    repo: italoiz/unform-material-ui
