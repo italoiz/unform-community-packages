@@ -1,8 +1,9 @@
 import { Form } from '@rocketseat/unform';
 import React from 'react';
+import { hot } from 'react-hot-loader/root';
 import * as Yup from 'yup';
 
-import { TextField } from '../../lib';
+import { TextField, Select } from '../../lib';
 import GlobalStyles, { Section } from './styles';
 
 // validation schema.
@@ -10,16 +11,26 @@ const schema = Yup.object().shape({
   firstName: Yup.string(),
   lastName: Yup.string(),
   email: Yup.string().required(),
+  country: Yup.mixed(),
+  tech: Yup.mixed(),
+  withDefault: Yup.number().required(),
+  withError: Yup.string().required(),
+  multipleSelect: Yup.array(),
 });
 
-export default function App() {
+function App() {
   function handleSubmit(payload) {
     console.log(payload);
   }
 
+  const initialData = {
+    firstName: 'Diego',
+    withDefault: 1,
+  };
+
   return (
     <>
-      <Form onSubmit={handleSubmit} schema={schema}>
+      <Form onSubmit={handleSubmit} schema={schema} initialData={initialData}>
         <Section>
           <h1>{'<TextField /> Component'}</h1>
 
@@ -34,6 +45,55 @@ export default function App() {
         </Section>
 
         <Section>
+          <h1>{'<Select /> Component'}</h1>
+
+          <div>
+            <Select
+              name="country"
+              label="Country"
+              options={[
+                { value: { id: 1, name: 'brazil' }, label: 'Brazil' },
+                { value: 'canada', label: 'Canada' },
+              ]}
+            />
+
+            <Select
+              native
+              name="tech"
+              label="Tech (Native Select)"
+              options={[
+                { value: 'react', label: 'React' },
+                { value: 'node', label: 'NodeJS' },
+              ]}
+            />
+
+            <Select
+              name="withDefault"
+              label="Default value"
+              options={[{ value: 1, label: '#ID 1' }]}
+            />
+
+            <Select
+              name="withError"
+              label="Error"
+              options={[{ value: 'foo', label: 'bar' }]}
+            />
+
+            <Select
+              multiple
+              name="multipleSelect"
+              label="Multiple"
+              options={[
+                { value: 'node', label: 'NodeJS' },
+                { value: 'react', label: 'React' },
+                { value: 'vuejs', label: 'Vue' },
+                { value: 'angular', label: 'Angular' },
+              ]}
+            />
+          </div>
+        </Section>
+
+        <Section>
           <div>
             <button type="submit">ok!</button>
           </div>
@@ -43,3 +103,5 @@ export default function App() {
     </>
   );
 }
+
+export default hot(App);

@@ -26,6 +26,7 @@ This library uses [Unform](https://github.com/Rocketseat/unform) + [Material UI]
   - [Basics](#basics)
   - [Components](#components)
     - [TextField Component](#textfield--component)
+    - [Select Component](#select--component)
 - [Contributing](#contributing)
   - [Contribution Guidelines](#contribution-guidelines)
   - [Code of Conduct](#code-of-conduct)
@@ -73,6 +74,42 @@ function App() {
     <Form onSubmit={handleSubmit}>
       <TextField name="name" />
       <TextField multiline name="bio" />
+
+      <button type="submit">Send</button>
+    </Form>
+  );
+}
+```
+
+#### `<Select />` Component
+
+The `<Select />` component, is similar to the default component `<Select />`. See the component documentation [here](https://material-ui.com/api/select/) for more information.
+
+```jsx
+import React from 'react';
+import { Form } from '@rocketseat/unform';
+import { Select } from 'unform-material-ui';
+
+function App() {
+  function handleSubmit(data) {
+    /**
+     * {
+     *  "tech": ['node'],
+     *  "country": "brazil"
+     * }
+     */
+  }
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Select multiple name="tech" options={[
+        { value: 'node', label: 'NodeJS' },
+        { value: 'react', label: 'React' },
+      ]} />
+
+      <Select name="country" label="Country" options={[
+        { value: 'brazil', label: 'Brazil' },
+      ]} />
 
       <button type="submit">Send</button>
     </Form>

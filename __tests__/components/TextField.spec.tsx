@@ -65,4 +65,23 @@ describe('<TextField /> Component', () => {
       expect.any(Object)
     );
   });
+
+  it('should return default data on submit form', () => {
+    const submitMock = jest.fn();
+
+    const initialData = { name: 'foo bar' };
+
+    const { getByTestId } = render(
+      <Form onSubmit={submitMock} initialData={initialData}>
+        <TextField name="name" label="Name" />
+      </Form>
+    );
+
+    fireEvent.submit(getByTestId('form'));
+
+    expect(submitMock).toHaveBeenCalledWith(
+      { name: 'foo bar' },
+      expect.any(Object)
+    );
+  });
 });

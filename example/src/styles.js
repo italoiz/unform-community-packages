@@ -17,6 +17,7 @@ export const Section = styled.section`
     max-width: 400px;
     display: inline-grid;
     grid-column-gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
   }
 `;
 

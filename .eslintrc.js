@@ -52,6 +52,7 @@ module.exports = {
     'react/prop-types': 'off',
     'jsx-a11y/label-has-for': 'off',
     'import/prefer-default-export': 'off',
+    'import/named': 'off',
     'react-hooks/rules-of-hooks': 'error',
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
   },
