@@ -10,7 +10,7 @@ import pkg from './package.json';
 
 export default {
   input: 'lib/index.ts',
-  external: ['react', 'react-dom'],
+  external: ['react', 'react-dom', '@rocketseat/unform', '@material-ui/core'],
   output: [
     {
       file: pkg.main,

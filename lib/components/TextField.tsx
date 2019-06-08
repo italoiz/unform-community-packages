@@ -1,8 +1,8 @@
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
+import MUITextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useField } from '@rocketseat/unform';
 import React, { useRef, useEffect } from 'react';
 
-export default function UnformTextField({
+export default function TextField({
   name,
   helperText,
   ...rest
@@ -36,5 +36,5 @@ export default function UnformTextField({
     },
   };
 
-  return <TextField {...props} />;
+  return <MUITextField {...props} />;
 }
