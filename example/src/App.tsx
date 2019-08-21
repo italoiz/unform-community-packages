@@ -3,19 +3,21 @@ import React from 'react';
 import { hot } from 'react-hot-loader/root';
 import * as Yup from 'yup';
 
-import { TextField, Select } from '../../lib';
+import { TextField, Select, Checkbox } from '../../lib';
 import GlobalStyles, { Section } from './styles';
 
 // validation schema.
 const schema = Yup.object().shape({
   firstName: Yup.string(),
   lastName: Yup.string(),
-  email: Yup.string().required(),
+  email: Yup.string(),
   country: Yup.mixed(),
   tech: Yup.mixed(),
-  withDefault: Yup.number().required(),
-  withError: Yup.string().required(),
+  withDefault: Yup.number(),
+  withError: Yup.string(),
   multipleSelect: Yup.array(),
+  terms: Yup.boolean(),
+  acceptEmails: Yup.boolean(),
 });
 
 function App() {
@@ -29,7 +31,7 @@ function App() {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Form onSubmit={handleSubmit} schema={schema} initialData={initialData}>
         <Section>
           <h1>{'<TextField /> Component'}</h1>
@@ -94,13 +96,26 @@ function App() {
         </Section>
 
         <Section>
+          <h1>{'<Checkbox /> Component'}</h1>
+
+          <div>
+            <Checkbox name="terms" label="Terms & Conditions" />
+            <Checkbox
+              name="acceptEmails"
+              label="I accept to receive promotional e-mails"
+              checked
+            />
+          </div>
+        </Section>
+
+        <Section>
           <div>
             <button type="submit">ok!</button>
           </div>
         </Section>
       </Form>
       <GlobalStyles />
-    </>
+    </React.Fragment>
   );
 }
 

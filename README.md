@@ -20,13 +20,16 @@ This library uses [Unform](https://github.com/Rocketseat/unform) + [Material UI]
 
 ## Table of contents
 
+- [Overview](#overview)
+- [Table of contents](#table-of-contents)
 - [Roadmap](#roadmap)
 - [Installation](#installation)
 - [Guides](#guides)
   - [Basics](#basics)
   - [Components](#components)
-    - [TextField Component](#textfield--component)
-    - [Select Component](#select--component)
+    - [`<TextField />` Component](#textfield--component)
+    - [`<Select />` Component](#select--component)
+    - [`<Checkbox />` Component](#checkbox--component)
 - [Contributing](#contributing)
   - [Contribution Guidelines](#contribution-guidelines)
   - [Code of Conduct](#code-of-conduct)
@@ -110,6 +113,41 @@ function App() {
       <Select name="country" label="Country" options={[
         { value: 'brazil', label: 'Brazil' },
       ]} />
+
+      <button type="submit">Send</button>
+    </Form>
+  );
+}
+```
+
+#### `<Checkbox />` Component
+
+The `<Checkbox />` component, is similar to the default component `<Checkbox />`. See the component documentation [here](https://material-ui.com/api/checkboxes/) for more information.
+
+> ℹ️ Because of component nature, he is not completely "not controlled" all the time. Internally he becomes a controlled component when passed a property `checked` as true.
+
+```jsx
+import React from 'react';
+import { Form } from '@rocketseat/unform';
+import { Checkbox } from 'unform-material-ui';
+
+function App() {
+  function handleSubmit(data) {
+    /**
+     * {
+     *  "terms": true,
+     *  "acceptEmails": true
+     * }
+     */
+  }
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      {/* not controlled */}
+      <Checkbox name="terms" label="Terms & Conditions" />
+
+      {/* internally controlled */}
+      <Checkbox name="acceptEmails" label="I accept to receive promotional emails" checked />
 
       <button type="submit">Send</button>
     </Form>
