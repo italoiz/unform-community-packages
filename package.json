@@ -50,7 +50,7 @@
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",
     "@material-ui/core": "^4.0.2",
-    "@rocketseat/unform": "^1.4.0",
+    "@rocketseat/unform": "^1.5.0",
     "@testing-library/react": "^8.0.1",
     "@types/jest": "^24.0.13",
     "@types/lodash": "^4.14.134",
