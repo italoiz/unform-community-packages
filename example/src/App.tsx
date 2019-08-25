@@ -92,6 +92,18 @@ function App() {
                 { value: 'angular', label: 'Angular' },
               ]}
             />
+
+            <Select
+              name="multipleSelect"
+              label="Outline Variant"
+              variant="outlined"
+              options={[
+                { value: 'node', label: 'NodeJS' },
+                { value: 'react', label: 'React' },
+                { value: 'vuejs', label: 'Vue' },
+                { value: 'angular', label: 'Angular' },
+              ]}
+            />
           </div>
         </Section>
 

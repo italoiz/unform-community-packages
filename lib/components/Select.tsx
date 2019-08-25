@@ -3,6 +3,8 @@ import {
   InputLabel,
   MenuItem,
   FormHelperText,
+  FilledInput,
+  OutlinedInput,
 } from '@material-ui/core';
 import MUISelect, {
   SelectProps as MUISelectProps,
@@ -35,6 +37,7 @@ export default function Select({
   options,
   native = false,
   multiple,
+  variant,
   ...rest
 }: SelectProps) {
   function getDefaultValue(value: string | string[]) {
@@ -80,6 +83,18 @@ export default function Select({
     return toString(source);
   }
 
+  function renderInputVariant() {
+    if (variant === 'outlined') {
+      return <OutlinedInput labelWidth={100} name={fieldName} id={fieldName} />;
+    }
+
+    if (variant === 'filled') {
+      return <FilledInput name={fieldName} id={fieldName} />;
+    }
+
+    return undefined;
+  }
+
   const props = {
     ...rest,
     native,
@@ -93,10 +108,11 @@ export default function Select({
       'aria-label': fieldName,
     },
     onChange: handleChange,
+    input: renderInputVariant(),
   };
 
   return (
-    <FormControl error={!!error}>
+    <FormControl error={!!error} variant={variant}>
       {!!label && <InputLabel htmlFor={fieldName}>{label}</InputLabel>}
 
       <MUISelect {...props}>
