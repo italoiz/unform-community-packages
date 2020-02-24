@@ -1,0 +1,32 @@
+{
+  "name": "unform-material-ui",
+  "version": "1.0.0",
+  "author": "Italo Izaac <italoiz.dev@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "typings/index.d.ts",
+  "files": [
+    "dist",
+    "typings"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/italoiz/unform-community-packages.git",
+    "directory": "packages/material-ui"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "^4.9.4",
+    "@unform/core": "*",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.1.1",
+    "@testing-library/react": "^9.4.1",
+    "@unform/web": "^2.0.0"
+  }
+}

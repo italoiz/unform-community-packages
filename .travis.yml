@@ -26,4 +26,4 @@ deploy:
     secure: $API_KEY
   on:
     tags: true
-    repo: italoiz/unform-material-ui
+    repo: italoiz/unform-community-packages
