@@ -33,6 +33,7 @@
     "@typescript-eslint/parser": "2.15.0",
     "@unform/core": "^2.0.0",
     "@unform/web": "^2.0.0",
+    "antd": "^3.26.12",
     "commitlint-config-rocketseat": "^0.0.1",
     "coveralls": "^3.0.9",
     "eslint": "^6.8.0",
@@ -67,5 +68,14 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/italoiz/unform-community-packages.git"
+  },
+  "changelog": {
+    "labels": {
+      "feature": "🚀 New Features",
+      "enhancement": "💅🏻 Enhancements",
+      "bug": "🐛 Bug Fix",
+      "breaking": "💥 Breaking Change",
+      "documentation": "📝 Documentation"
+    }
   }
 }
