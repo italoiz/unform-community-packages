@@ -2,7 +2,8 @@ import '@testing-library/jest-dom/extend-expect';
 import React, { RefObject } from 'react';
 
 import { MenuItem } from '@material-ui/core';
-import { fireEvent, act } from '@testing-library/react';
+import { fireEvent, act, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { FormHandles } from '@unform/core';
 
 import { Select } from '../../lib';
@@ -217,5 +218,91 @@ describe('<Select /> Component', () => {
 
     expect(onChange).toHaveBeenCalled();
     expect(instance).toEqual({ called: true, value: 'br' });
+  });
+
+  it('should shrink label when <Select /> is native type', () => {
+    const { getByTestId } = render(
+      <Select name="country" label="Country" native>
+        <option value="br">Brazil</option>
+        <option value="us">United State</option>
+      </Select>,
+    );
+
+    const label = getByTestId('select-label');
+    expect(label).toHaveAttribute('data-shrink', 'true');
+  });
+
+  it('should shrink label when <Select /> is multiple type and is not empty', () => {
+    const { getByTestId } = render(
+      <Select name="country" label="Country" multiple>
+        <option value="br">Brazil</option>
+        <option value="us">United State</option>
+      </Select>,
+      {
+        initialData: {
+          country: ['br'],
+        },
+      },
+    );
+
+    const label = getByTestId('select-label');
+    expect(label).toHaveAttribute('data-shrink', 'true');
+  });
+
+  it('should return array values on submit form and <Select /> is multiple type', () => {
+    const onSubmit = jest.fn();
+
+    const { getByTestId } = render(
+      <Select name="country" label="Country" multiple>
+        <option value="br">Brazil</option>
+        <option value="us">United State</option>
+      </Select>,
+      {
+        initialData: {
+          country: ['br'],
+        },
+        onSubmit,
+      },
+    );
+
+    fireEvent.submit(getByTestId('form'));
+    expect(onSubmit).toHaveBeenCalledWith(
+      {
+        country: ['br'],
+      },
+      expect.any(Object),
+      expect.any(Object),
+    );
+  });
+
+  it('should return array values on submit form and <Select /> is multiple and native type', () => {
+    const onSubmit = jest.fn();
+
+    const { getByTestId } = render(
+      <Select
+        name="country"
+        label="Country"
+        native
+        multiple
+        inputProps={{ 'data-testid': 'select-input' }}
+      >
+        <option value="br">Brazil</option>
+        <option value="us">United State</option>
+      </Select>,
+      {
+        onSubmit,
+      },
+    );
+
+    userEvent.selectOptions(screen.getByTestId('select-input'), ['br', 'us']);
+    fireEvent.submit(getByTestId('form'));
+
+    expect(onSubmit).toHaveBeenCalledWith(
+      {
+        country: ['br', 'us'],
+      },
+      expect.any(Object),
+      expect.any(Object),
+    );
   });
 });
