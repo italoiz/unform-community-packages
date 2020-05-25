@@ -46,6 +46,7 @@ describe('<Switch /> Component', () => {
     expect(submitMock).toHaveBeenCalledWith(
       { terms: true },
       expect.any(Object),
+      expect.any(Object),
     );
   });
 
