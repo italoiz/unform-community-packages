@@ -83,4 +83,76 @@ describe('<TextField /> Component', () => {
 
     expect(console.error).toHaveBeenCalled(); // eslint-disable-line no-console
   });
+
+  it('should shrink label when value is change', () => {
+    const { getByTestId } = render(
+      <TextField
+        name="name"
+        label="Name"
+        InputLabelProps={{ 'data-testid': 'input-label' } as any}
+        inputProps={{ 'data-testid': 'input' }}
+      />,
+    );
+
+    const input = getByTestId('input');
+    const label = getByTestId('input-label');
+
+    act(() => {
+      fireEvent.input(input, {
+        target: { value: 'foo bar' },
+      });
+    });
+
+    expect(label).toHaveAttribute('data-shrink', 'true');
+  });
+
+  it('should shrink label when value is change via unform api', () => {
+    const formRef: RefObject<FormHandles> = { current: null };
+
+    const { getByTestId } = render(
+      <TextField
+        name="name"
+        label="Name"
+        InputLabelProps={{ 'data-testid': 'input-label' } as any}
+      />,
+      {
+        ref: formRef,
+      },
+    );
+
+    const label = getByTestId('input-label');
+
+    act(() => {
+      if (formRef.current) {
+        formRef.current.setData({ name: 'foo bar' });
+      }
+    });
+
+    expect(label).toHaveAttribute('data-shrink', 'true');
+  });
+
+  it('should not shrink label when value is empty', () => {
+    const formRef: RefObject<FormHandles> = { current: null };
+
+    const { getByTestId } = render(
+      <TextField
+        name="name"
+        label="Name"
+        InputLabelProps={{ 'data-testid': 'input-label' } as any}
+      />,
+      {
+        ref: formRef,
+      },
+    );
+
+    const label = getByTestId('input-label');
+
+    act(() => {
+      if (formRef.current) {
+        formRef.current.setData({ name: '' });
+      }
+    });
+
+    expect(label).toHaveAttribute('data-shrink', 'false');
+  });
 });

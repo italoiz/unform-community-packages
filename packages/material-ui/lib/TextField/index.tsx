@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 import { TextField as BaseTextField } from '@material-ui/core';
 import { useField } from '@unform/core';
@@ -10,6 +10,7 @@ const TextField: React.FC<TextFieldProps> = ({
   name,
   helperText,
   defaultValue,
+  InputLabelProps,
   ...restProps
 }) => {
   if (!name) {
@@ -18,13 +19,26 @@ const TextField: React.FC<TextFieldProps> = ({
     );
   }
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const {
     fieldName,
     defaultValue: fieldDefaultValue,
     registerField,
     error,
   } = useField(name);
+  const defaultInputValue = fieldDefaultValue || defaultValue;
+  const [shrink, setShrink] = useState<boolean>(!!defaultInputValue);
+
+  const _handleShrinkLabel = useCallback(
+    (value: string) => {
+      setShrink(oldShrink => {
+        return (value && !oldShrink) || (!value && oldShrink)
+          ? !oldShrink
+          : oldShrink;
+      });
+    },
+    [setShrink],
+  );
 
   useEffect(() => {
     if (fieldName) {
@@ -32,9 +46,33 @@ const TextField: React.FC<TextFieldProps> = ({
         name: fieldName,
         ref: inputRef.current,
         path: 'value',
+        setValue(ref: HTMLInputElement, value: string) {
+          if (ref) {
+            ref.value = value;
+            _handleShrinkLabel(value);
+          }
+        },
       });
     }
-  }, [fieldName, registerField]);
+  }, [fieldName, registerField, _handleShrinkLabel]);
+
+  useEffect(() => {
+    const input = inputRef.current;
+
+    const handler = (e: React.ChangeEvent<HTMLInputElement>) => {
+      _handleShrinkLabel(e.currentTarget.value);
+    };
+
+    if (input) {
+      input.addEventListener('input', handler as any);
+    }
+
+    return () => {
+      if (input) {
+        input.removeEventListener('input', handler as any);
+      }
+    };
+  }, [inputRef, _handleShrinkLabel]);
 
   return (
     <BaseTextField
@@ -43,9 +81,13 @@ const TextField: React.FC<TextFieldProps> = ({
       error={!!error}
       helperText={error || helperText}
       inputRef={inputRef}
-      defaultValue={fieldDefaultValue || defaultValue}
+      defaultValue={defaultInputValue}
+      InputLabelProps={{
+        ...InputLabelProps,
+        shrink,
+      }}
     />
   );
 };
 
-export default TextField;
+export default React.memo(TextField);
