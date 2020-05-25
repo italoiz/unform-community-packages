@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/extend-expect';
 import React, { RefObject } from 'react';
 
 import { MenuItem } from '@material-ui/core';
-import { fireEvent, wait, act } from '@testing-library/react';
+import { fireEvent, act } from '@testing-library/react';
 import { FormHandles } from '@unform/core';
 
 import { Select } from '../../lib';
@@ -18,18 +18,16 @@ describe('<Select /> Component', () => {
   });
 
   it('should render select options correctly', () => {
-    const { baseElement, getByRole } = render(
+    const { getByRole, getAllByRole } = render(
       <Select name="country" value="">
         <MenuItem value="br">Brazil</MenuItem>
         <MenuItem value="us">United State</MenuItem>
       </Select>,
     );
 
-    fireEvent.click(getByRole('button'));
-
-    wait(() => {
-      expect(baseElement.querySelectorAll('li[role=option]').length).toBe(2);
-    });
+    fireEvent.mouseDown(getByRole('button'));
+    const options = getAllByRole('option');
+    expect(options.length).toBe(2);
   });
 
   it('should render with `defaultValue` property when exists', () => {
@@ -73,6 +71,7 @@ describe('<Select /> Component', () => {
 
     expect(submitMock).toHaveBeenCalledWith(
       { country: 'us' },
+      expect.any(Object),
       expect.any(Object),
     );
   });
@@ -127,5 +126,96 @@ describe('<Select /> Component', () => {
     );
 
     expect(console.error).toHaveBeenCalled(); // eslint-disable-line no-console
+  });
+
+  it('should call `onChange` on select an option', () => {
+    const onChange = jest.fn();
+
+    const { getByRole, getAllByRole } = render(
+      <Select name="country" onChange={onChange}>
+        <MenuItem value="br">Brazil</MenuItem>
+        <MenuItem value="us">United State</MenuItem>
+      </Select>,
+    );
+
+    fireEvent.mouseDown(getByRole('button'));
+    const option = getAllByRole('option')[0];
+    fireEvent.click(option);
+    expect(onChange).toHaveBeenCalled();
+  });
+
+  it('should call `onChange` on select an option via unform api', () => {
+    const onChange = jest.fn();
+    const ref: RefObject<FormHandles> = { current: null };
+
+    render(
+      <Select name="country" onChange={onChange}>
+        <MenuItem value="br">Brazil</MenuItem>
+        <MenuItem value="us">United State</MenuItem>
+      </Select>,
+      {
+        ref,
+      },
+    );
+
+    act(() => {
+      if (ref.current) {
+        ref.current.setFieldValue('country', 'br');
+        ref.current.setData({ country: 'us' });
+      }
+      expect(onChange).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it('should update internal state on select an option via unform api', () => {
+    const ref: RefObject<FormHandles> = { current: null };
+    const submitMock = jest.fn();
+
+    const { getByTestId } = render(
+      <Select name="country">
+        <MenuItem value="br">Brazil</MenuItem>
+        <MenuItem value="us">United State</MenuItem>
+      </Select>,
+      {
+        ref,
+        onSubmit: submitMock,
+      },
+    );
+
+    act(() => {
+      if (ref.current) {
+        ref.current.setFieldValue('country', 'br');
+      }
+    });
+
+    fireEvent.submit(getByTestId('form'));
+    expect(submitMock).toHaveBeenCalledWith(
+      {
+        country: 'br',
+      },
+      expect.any(Object),
+      expect.any(Object),
+    );
+  });
+
+  it('should not update internal state when `onChange` and `value` properties is provided', async () => {
+    const instance = { called: false, value: 'br' };
+    const onChange = jest.fn().mockImplementation(() => {
+      instance.called = true;
+    });
+
+    const { getByRole, getAllByRole } = render(
+      <Select name="country" value={instance.value} onChange={onChange}>
+        <MenuItem value="br">Brazil</MenuItem>
+        <MenuItem value="us">United State</MenuItem>
+      </Select>,
+    );
+
+    fireEvent.mouseDown(getByRole('button'));
+    const options = getAllByRole('option');
+    fireEvent.click(options[1]);
+
+    expect(onChange).toHaveBeenCalled();
+    expect(instance).toEqual({ called: true, value: 'br' });
   });
 });

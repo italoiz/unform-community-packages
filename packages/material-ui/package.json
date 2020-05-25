@@ -1,6 +1,6 @@
 {
   "name": "unform-material-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Italo Izaac <italoiz.dev@gmail.com>",
   "license": "MIT",
   "main": "dist/index.js",
@@ -19,14 +19,14 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.9.4",
-    "@unform/core": "*",
+    "@material-ui/core": "^4.10.0",
+    "@unform/core": "^2.1.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^9.4.1",
-    "@unform/web": "^2.0.0"
+    "@unform/web": "^2.1.0"
   }
 }
