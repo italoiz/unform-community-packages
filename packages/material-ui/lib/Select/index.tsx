@@ -17,6 +17,16 @@ import { useField } from '@unform/core';
 import { printWarning } from '../debug';
 import { SelectProps } from './types';
 
+function getOptionsCollectionArray(
+  options: HTMLOptionsCollection,
+): HTMLOptionElement[] {
+  const arr: HTMLOptionElement[] = [];
+  for (let i = 0; i < options.length; i += 1) {
+    arr.push(options[i]);
+  }
+  return arr;
+}
+
 const Select: React.FC<SelectProps> = ({
   name,
   label,
@@ -27,6 +37,7 @@ const Select: React.FC<SelectProps> = ({
   native,
   onChange,
   value: valueProp,
+  multiple,
   ...restProps
 }) => {
   if (!name) {
@@ -44,18 +55,32 @@ const Select: React.FC<SelectProps> = ({
 
   const inputRef = useRef(null);
   const defaultInputValue = useMemo(() => {
+    if (multiple) {
+      return defaultFieldValue || defaultValue || [];
+    }
     return defaultFieldValue || defaultValue || '';
-  }, [defaultFieldValue, defaultValue]);
+  }, [defaultFieldValue, defaultValue, multiple]);
   const [inputValue, setInputValue] = useState(defaultInputValue);
 
   const _handleChange = useCallback(
     e => {
+      const el = e.target;
+      let value: number | number[] | string | string[];
+
+      if (native && multiple) {
+        value = getOptionsCollectionArray(el.options)
+          .filter(opt => opt.selected)
+          .map(opt => opt.value);
+      } else {
+        value = el.value;
+      }
+
       if (valueProp === undefined && onChange === undefined) {
-        setInputValue(() => e.target.value);
+        setInputValue(() => value);
       }
 
       if (valueProp === undefined && typeof onChange === 'function') {
-        setInputValue(() => e.target.value);
+        setInputValue(() => value);
         onChange(e, null);
       }
 
@@ -63,7 +88,7 @@ const Select: React.FC<SelectProps> = ({
         onChange(e, null);
       }
     },
-    [valueProp, onChange, setInputValue],
+    [valueProp, onChange, setInputValue, multiple, native],
   );
 
   useEffect(() => {
@@ -71,7 +96,9 @@ const Select: React.FC<SelectProps> = ({
       registerField({
         name: fieldName,
         ref: inputRef.current,
-        path: native === true ? 'value' : 'node.value',
+        getValue() {
+          return valueProp || inputValue;
+        },
         setValue(_, newValue: string | string[] | number[]) {
           _handleChange({
             target: { value: newValue },
@@ -79,7 +106,7 @@ const Select: React.FC<SelectProps> = ({
         },
       });
     }
-  }, [fieldName, registerField, _handleChange, native]);
+  }, [fieldName, registerField, _handleChange, native, valueProp, inputValue]);
 
   const baseSelectProps: SelectProps = useMemo(
     () => ({
@@ -91,10 +118,31 @@ const Select: React.FC<SelectProps> = ({
       defaultValue: defaultInputValue || inputValue,
       onChange: _handleChange,
       name,
+      multiple,
       ...restProps,
     }),
-    [inputValue, defaultInputValue, name, restProps, _handleChange, valueProp],
+    [
+      inputValue,
+      defaultInputValue,
+      name,
+      restProps,
+      _handleChange,
+      valueProp,
+      multiple,
+    ],
   );
+
+  const shrink = useMemo<boolean>(() => {
+    if (native) {
+      return true;
+    }
+
+    if (multiple) {
+      return !!(valueProp || inputValue).length;
+    }
+
+    return !!valueProp || !!inputValue;
+  }, [native, multiple, inputValue, valueProp]);
 
   return (
     <FormControl
@@ -103,7 +151,9 @@ const Select: React.FC<SelectProps> = ({
       error={!!error}
     >
       {!!label && (
-        <InputLabel shrink={!!inputValue || !!valueProp}>{label}</InputLabel>
+        <InputLabel shrink={shrink} {...{ 'data-testid': 'select-label' }}>
+          {label}
+        </InputLabel>
       )}
 
       <BaseSelect {...baseSelectProps} native={native}>
