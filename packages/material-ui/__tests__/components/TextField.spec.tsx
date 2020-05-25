@@ -51,6 +51,7 @@ describe('<TextField /> Component', () => {
     expect(submitMock).toHaveBeenCalledWith(
       { name: 'foo bar' },
       expect.any(Object),
+      expect.any(Object),
     );
   });
 
