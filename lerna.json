@@ -6,11 +6,14 @@
   "command": {
     "version": {
       "allowBranch": "master",
-      "message": "chore(release): publish"
+      "message": "chore(release): publish",
+      "tagVersionPrefix": "v",
+      "conventionalCommits": true
     }
   },
   "options": {
     "preset": {
+      "name": "conventionalcommits",
       "types": [
         {
           "type": "feat",
