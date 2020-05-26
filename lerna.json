@@ -2,5 +2,27 @@
   "npmClient": "yarn",
   "useWorkspaces": true,
   "packages": ["packages/*"],
-  "version": "independent"
+  "version": "independent",
+  "command": {
+    "version": {
+      "allowBranch": "master",
+      "message": "chore(release): publish"
+    }
+  },
+  "options": {
+    "preset": {
+      "types": [
+        {
+          "type": "feat",
+          "section": ":sparkles: Features",
+          "hidden": false
+        },
+        { "type": "fix", "section": ":bug: Bug Fixes", "hidden": false },
+        { "type": "docs", "section": ":memo: Docs", "hidden": false },
+        { "type": "test", "hidden": true },
+        { "type": "ci", "hidden": true },
+        { "type": "chore", "hidden": true }
+      ]
+    }
+  }
 }
