@@ -1,6 +1,7 @@
 const { resolve } = require('path');
 
 module.exports = {
+  root: true,
   env: {
     browser: true,
     es6: true,
@@ -17,7 +18,6 @@ module.exports = {
     },
     ecmaVersion: 2018,
     sourceType: 'module',
-    project: resolve(__dirname, 'tsconfig.eslint.json'),
   },
   parser: '@typescript-eslint/parser',
   plugins: [
