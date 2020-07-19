@@ -5,8 +5,8 @@ import { Form } from '@unform/web';
 
 export default function RenderTest(
   children: React.ReactNode,
-  props: object = {},
-) {
+  props: Record<string, any> = {},
+): any {
   const mockFunction = jest.fn();
   return rtlRender(
     <Form data-testid="form" onSubmit={mockFunction} {...props}>
