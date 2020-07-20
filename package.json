@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "lerna exec --parallel -- rimraf dist",
-    "build": "lerna exec --parallel -- rollup -c ../../rollup.config.js",
+    "build": "lerna run --parallel --stream build",
     "test": "jest",
     "coveralls": "jest && cat ./coverage/lcov.info | coveralls",
     "prepublish": "yarn build"

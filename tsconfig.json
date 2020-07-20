@@ -21,6 +21,6 @@
     "esModuleInterop": true,
     "baseUrl": "."
   },
-  "include": ["packages/**/*"],
+  "include": ["packages/**/*", "examples/**/*"],
   "exclude": ["node_modules", "packages/**/__tests__"]
 }
