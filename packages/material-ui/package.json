@@ -16,7 +16,8 @@
     "directory": "packages/material-ui"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "rollup -c ../../rollup.config.js"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.10.0",
