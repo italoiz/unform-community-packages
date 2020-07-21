@@ -84,7 +84,7 @@ describe('<TextField /> Component', () => {
     expect(console.error).toHaveBeenCalled(); // eslint-disable-line no-console
   });
 
-  it('should shrink label when value is change', () => {
+  it('should shrink label when focus on input', () => {
     const { getByTestId } = render(
       <TextField
         name="name"
@@ -98,12 +98,14 @@ describe('<TextField /> Component', () => {
     const label = getByTestId('input-label');
 
     act(() => {
-      fireEvent.input(input, {
-        target: { value: 'foo bar' },
-      });
+      fireEvent.focus(input);
     });
-
     expect(label).toHaveAttribute('data-shrink', 'true');
+
+    act(() => {
+      fireEvent.blur(input);
+    });
+    expect(label).toHaveAttribute('data-shrink', 'false');
   });
 
   it('should shrink label when value is change via unform api', () => {
@@ -154,5 +156,99 @@ describe('<TextField /> Component', () => {
     });
 
     expect(label).toHaveAttribute('data-shrink', 'false');
+  });
+
+  it('should not shrink label on reset input value', () => {
+    const formRef: RefObject<FormHandles> = { current: null };
+
+    const { getByTestId } = render(
+      <TextField
+        name="name"
+        label="Name"
+        InputLabelProps={{ 'data-testid': 'input-label' } as any}
+      />,
+      {
+        ref: formRef,
+      },
+    );
+
+    const label = getByTestId('input-label');
+
+    act(() => {
+      if (formRef.current) {
+        formRef.current.reset();
+      }
+    });
+
+    expect(label).toHaveAttribute('data-shrink', 'false');
+  });
+
+  it('should put reset value on input when data is passed to the reset function', () => {
+    const formRef: RefObject<FormHandles> = { current: null };
+    const submitMock = jest.fn();
+
+    const { getByTestId } = render(
+      <TextField
+        name="name"
+        label="Name"
+        InputLabelProps={{ 'data-testid': 'input-label' } as any}
+        inputProps={{ 'data-testid': 'input' }}
+      />,
+      {
+        ref: formRef,
+        onSubmit: submitMock,
+      },
+    );
+
+    act(() => {
+      if (formRef.current) {
+        formRef.current.reset({ name: 'foo bar reseted' });
+      }
+    });
+
+    fireEvent.submit(getByTestId('form'));
+    expect(submitMock).toHaveBeenCalledWith(
+      { name: 'foo bar reseted' },
+      expect.any(Object),
+      expect.any(Object),
+    );
+  });
+
+  it('should use prop `shrink` instead of default shrink behavior when property exists', () => {
+    const { getByTestId } = render(
+      <TextField
+        name="name"
+        label="Name"
+        InputLabelProps={{ 'data-testid': 'input-label', shrink: true } as any}
+      />,
+    );
+
+    const label = getByTestId('input-label');
+    expect(label).toHaveAttribute('data-shrink', 'true');
+  });
+
+  it('should use empty value instead of `undefined` when use the `setData` function with inexistent property value', () => {
+    const formRef: RefObject<FormHandles> = { current: null };
+    const submitMock = jest.fn();
+    const { getByTestId } = render(<TextField name="name" />, {
+      ref: formRef,
+      onSubmit: submitMock,
+    });
+
+    act(() => {
+      if (formRef.current) {
+        formRef.current.setData({
+          email: 'foo@bar.com',
+        });
+      }
+    });
+
+    fireEvent.submit(getByTestId('form'));
+
+    expect(submitMock).toHaveBeenCalledWith(
+      { name: '' },
+      expect.any(Object),
+      expect.any(Object),
+    );
   });
 });

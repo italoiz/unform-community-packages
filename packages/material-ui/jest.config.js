@@ -9,5 +9,4 @@ module.exports = {
   ...baseConfig,
   displayName: pkg.name,
   testMatch: [join(__dirname, '__tests__/**/*.spec.{ts,tsx}')],
-  coverageDirectory: join(__dirname, '__tests__/coverage'),
 };
