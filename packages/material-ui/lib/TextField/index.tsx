@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import { TextField as BaseTextField } from '@material-ui/core';
 import { useField } from '@unform/core';
@@ -19,26 +19,15 @@ const TextField: React.FC<TextFieldProps> = ({
     );
   }
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const {
     fieldName,
-    defaultValue: fieldDefaultValue,
+    defaultValue: defaultFieldValue,
     registerField,
     error,
   } = useField(name);
-  const defaultInputValue = fieldDefaultValue || defaultValue;
+  const defaultInputValue = defaultValue ?? defaultFieldValue;
   const [shrink, setShrink] = useState<boolean>(!!defaultInputValue);
-
-  const _handleShrinkLabel = useCallback(
-    (value: string) => {
-      setShrink(oldShrink => {
-        return (value && !oldShrink) || (!value && oldShrink)
-          ? !oldShrink
-          : oldShrink;
-      });
-    },
-    [setShrink],
-  );
 
   useEffect(() => {
     if (fieldName) {
@@ -46,33 +35,47 @@ const TextField: React.FC<TextFieldProps> = ({
         name: fieldName,
         ref: inputRef.current,
         path: 'value',
+        clearValue(ref, resetValue: string) {
+          const newValue = resetValue ?? defaultInputValue ?? '';
+          ref.value = newValue;
+          setShrink(!!newValue);
+        },
         setValue(ref: HTMLInputElement, value: string) {
           if (ref) {
-            ref.value = value;
-            _handleShrinkLabel(value);
+            const newValue = value ?? '';
+            ref.value = newValue;
+            setShrink(!!newValue);
           }
         },
       });
     }
-  }, [fieldName, registerField, _handleShrinkLabel]);
+  }, [fieldName, registerField, defaultInputValue, setShrink]);
 
   useEffect(() => {
     const input = inputRef.current;
 
-    const handler = (e: React.ChangeEvent<HTMLInputElement>) => {
-      _handleShrinkLabel(e.currentTarget.value);
-    };
+    function handlerFocusEvent(evt: FocusEvent) {
+      const inputValue = (evt.currentTarget as HTMLInputElement).value;
+      if (!inputValue) setShrink(true);
+    }
+
+    function handlerBlurEvent(evt: FocusEvent) {
+      const inputValue = (evt.target as HTMLInputElement).value;
+      if (!inputValue) setShrink(false);
+    }
 
     if (input) {
-      input.addEventListener('input', handler as any);
+      input.addEventListener('focus', handlerFocusEvent);
+      input.addEventListener('blur', handlerBlurEvent);
     }
 
     return () => {
       if (input) {
-        input.removeEventListener('input', handler as any);
+        input.removeEventListener('focus', handlerFocusEvent);
+        input.removeEventListener('blur', handlerBlurEvent);
       }
     };
-  }, [inputRef, _handleShrinkLabel]);
+  }, [inputRef]);
 
   return (
     <BaseTextField
@@ -84,7 +87,7 @@ const TextField: React.FC<TextFieldProps> = ({
       defaultValue={defaultInputValue}
       InputLabelProps={{
         ...InputLabelProps,
-        shrink,
+        shrink: InputLabelProps?.shrink ?? shrink,
       }}
     />
   );

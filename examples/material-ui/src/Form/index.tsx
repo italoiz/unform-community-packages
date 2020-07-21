@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { TextField } from 'unform-material-ui';
-
 import { Button, Grid, CircularProgress } from '@material-ui/core';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 
+import { TextField } from '../../../../packages/material-ui/lib';
 import { useRandomPerson } from './useRandomPerson';
 
 const FormWrapper = () => {
@@ -23,6 +22,9 @@ const FormWrapper = () => {
       <Form
         ref={formRef}
         onSubmit={formdata => setData(formdata)}
+        initialData={{
+          email: 'foo@bar.com',
+        }}
         id="formdata"
       >
         <Grid container spacing={3}>
@@ -49,10 +51,12 @@ const FormWrapper = () => {
         </Button>
         <Button
           color="secondary"
-          type="reset"
+          type="button"
           variant="contained"
           size="small"
-          form="formdata"
+          onClick={() => {
+            formRef?.current?.reset({ email: 'test' });
+          }}
         >
           Reset
         </Button>
