@@ -72,3 +72,6 @@ yarn-error.log
 
 # Yarn Integrity file
 .yarn-integrity
+
+# examples files
+!examples/*/public/

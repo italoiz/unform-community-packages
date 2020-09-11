@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Button, Grid, CircularProgress } from '@material-ui/core';
+import { Button, Grid, CircularProgress, MenuItem } from '@material-ui/core';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 
-import { TextField } from '../../../../packages/material-ui/lib';
+import { TextField, Select } from '../../../../packages/material-ui/lib';
 import { useRandomPerson } from './useRandomPerson';
 
 const FormWrapper = () => {
@@ -28,14 +28,25 @@ const FormWrapper = () => {
         id="formdata"
       >
         <Grid container spacing={3}>
-          <Grid item xs>
-            <TextField fullWidth name="name.first" label="First Name" />
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              name="name.first"
+              label="First Name"
+              variant="outlined"
+            />
           </Grid>
-          <Grid item xs>
+          <Grid item xs={6}>
             <TextField fullWidth name="name.last" label="Last Name" />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <TextField fullWidth name="email" label="E-mail" />
+          </Grid>
+          <Grid item xs={6}>
+            <Select name="gender" label="Gender" variant="outlined" fullWidth>
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
+            </Select>
           </Grid>
         </Grid>
       </Form>
