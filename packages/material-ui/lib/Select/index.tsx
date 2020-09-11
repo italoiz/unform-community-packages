@@ -38,6 +38,7 @@ const Select: React.FC<SelectProps> = ({
   onChange,
   value: valueProp,
   multiple,
+  variant,
   ...restProps
 }) => {
   if (!name) {
@@ -119,6 +120,7 @@ const Select: React.FC<SelectProps> = ({
       onChange: _handleChange,
       name,
       multiple,
+      label,
       ...restProps,
     }),
     [
@@ -129,6 +131,7 @@ const Select: React.FC<SelectProps> = ({
       _handleChange,
       valueProp,
       multiple,
+      label,
     ],
   );
 
@@ -146,9 +149,10 @@ const Select: React.FC<SelectProps> = ({
 
   return (
     <FormControl
-      style={{ minWidth: 120, ...style }}
+      style={{ minWidth: 200, ...style }}
       className={className}
       error={!!error}
+      variant={variant}
     >
       {!!label && (
         <InputLabel shrink={shrink} {...{ 'data-testid': 'select-label' }}>
