@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.3](https://github.com/italoiz/unform-community-packages/compare/unform-material-ui@1.0.2...unform-material-ui@1.0.3) (2020-09-11)
+
+
+### Bug Fixes
+
+* Fix the <Select /> component variant style ([2a7731c](https://github.com/italoiz/unform-community-packages/commit/2a7731c5cf65bb06dcda292a59d567a954bae5f3)), closes [#25](https://github.com/italoiz/unform-community-packages/issues/25)
+
+
+
+
+
 ## [1.0.2](https://github.com/italoiz/unform-community-packages/compare/unform-material-ui@1.0.1...unform-material-ui@1.0.2) (2020-07-21)
 
 

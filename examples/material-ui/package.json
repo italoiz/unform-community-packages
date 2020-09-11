@@ -1,7 +1,7 @@
 {
   "name": "unform-material-ui-examples",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "author": "Italo Izaac <italoiz.dev@gmail.com>",
   "license": "MIT",
