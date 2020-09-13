@@ -14,7 +14,7 @@ const FormWrapper = () => {
 
   const loadData = React.useCallback(async () => {
     const person = await loadNewPerson();
-    formRef.current?.setData(person);
+    formRef.current?.setData({ ...person, yesno: 1, truefalse: true });
   }, [loadNewPerson]);
 
   return (
@@ -46,6 +46,28 @@ const FormWrapper = () => {
             <Select name="gender" label="Gender" variant="outlined" fullWidth>
               <MenuItem value="male">Male</MenuItem>
               <MenuItem value="female">Female</MenuItem>
+            </Select>
+          </Grid>
+          <Grid item xs={6}>
+            <Select
+              name="yesno"
+              label="Yes or No?"
+              variant="outlined"
+              fullWidth
+            >
+              <MenuItem value={0}>0 - No</MenuItem>
+              <MenuItem value={1}>1 - Yes</MenuItem>
+            </Select>
+          </Grid>
+          <Grid item xs={6}>
+            <Select
+              name="truefalse"
+              label="true or false?"
+              variant="outlined"
+              fullWidth
+            >
+              <MenuItem value={false}>False</MenuItem>
+              <MenuItem value>True</MenuItem>
             </Select>
           </Grid>
         </Grid>
