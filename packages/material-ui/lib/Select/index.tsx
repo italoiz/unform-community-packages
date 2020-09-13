@@ -27,6 +27,10 @@ function getOptionsCollectionArray(
   return arr;
 }
 
+function isValidValue(value: string | number | boolean): boolean {
+  return typeof value !== 'undefined' && value !== '';
+}
+
 const Select: React.FC<SelectProps> = ({
   name,
   label,
@@ -144,7 +148,7 @@ const Select: React.FC<SelectProps> = ({
       return !!(valueProp || inputValue).length;
     }
 
-    return !!valueProp || !!inputValue;
+    return isValidValue(valueProp as any) || !!isValidValue(inputValue);
   }, [native, multiple, inputValue, valueProp]);
 
   return (
