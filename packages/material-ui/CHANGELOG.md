@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/italoiz/unform-community-packages/compare/unform-material-ui@1.0.3...unform-material-ui@1.0.4) (2020-09-13)
+
+
+### Bug Fixes
+
+* **select:** Shrink select field when zero value is present ([c5fb062](https://github.com/italoiz/unform-community-packages/commit/c5fb0625420b1d775926e58d8321b6e271127860))
+
+
+
+
+
 ## [1.0.3](https://github.com/italoiz/unform-community-packages/compare/unform-material-ui@1.0.2...unform-material-ui@1.0.3) (2020-09-11)
 
 
