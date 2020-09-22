@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+
 import { CircularProgress, TextField as TextInput } from '@material-ui/core';
 import { Autocomplete as MaterialAutocomplete } from '@material-ui/lab';
 import { useField } from '@unform/core';
 
+import { printWarning } from '../debug';
 import { AutocompleteProps, AutocompleteOption } from './types';
 
 const Autocomplete: React.FC<AutocompleteProps> = ({
@@ -16,6 +18,12 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   required,
   ...restProps
 }) => {
+  if (!name) {
+    printWarning(
+      'Select component must have a `name` property for correctly working.',
+    );
+  }
+
   const { fieldName, registerField, defaultValue, error } = useField(name);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -63,11 +71,13 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 
   useEffect(() => {
     if (!loading && !initialLoaded) {
-      const initialDefaultOption =
-        multiple && Array.isArray(inputValue)
-          ? options.filter(option => inputValue.includes(option.value))
-          : options.find(option => option.value === inputValue);
-
+      const initialDefaultOption = multiple
+        ? options.filter(option =>
+            Array.isArray(inputValue)
+              ? inputValue.includes(option.value)
+              : [inputValue].includes(option.value),
+          )
+        : options.find(option => option.value === inputValue);
       setFilteredDefaultValue(initialDefaultOption);
       setInitialLoaded(true);
     }
@@ -76,41 +86,41 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   return (
     <>
       {initialLoaded ? (
-          <MaterialAutocomplete
-            {...restProps}
-            options={options}
-            loading={loading}
-            multiple={multiple}
-            defaultValue={inputValue ? filteredDefaultValue : undefined}
-            onChange={_handleChange}
-            getOptionLabel={option => option?.label ?? ''}
-            getOptionSelected={(option, value) => option.value === value.value}
-            renderInput={params => (
-              <TextInput
-                {...params}
-                error={!!error}
-                helperText={error || helperText}
-                name={name}
-                label={label}
-                required={required}
-                variant="outlined"
-                fullWidth
-                ref={params.InputProps.ref}
-                inputRef={inputRef}
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <>
-                      {loading ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </>
-                  ),
-                }}
-              />
-            )}
-          />
+        <MaterialAutocomplete
+          {...restProps}
+          options={options}
+          loading={loading}
+          multiple={multiple}
+          defaultValue={inputValue ? filteredDefaultValue : undefined}
+          onChange={_handleChange}
+          getOptionLabel={option => option?.label ?? ''}
+          getOptionSelected={(option, value) => option.value === value.value}
+          renderInput={params => (
+            <TextInput
+              {...params}
+              error={!!error}
+              helperText={error || helperText}
+              name={name}
+              label={label}
+              required={required}
+              variant="outlined"
+              fullWidth
+              ref={params.InputProps.ref}
+              inputRef={inputRef}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {loading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : null}
+                    {params.InputProps.endAdornment}
+                  </>
+                ),
+              }}
+            />
+          )}
+        />
       ) : (
         <CircularProgress color="inherit" size={20} />
       )}
