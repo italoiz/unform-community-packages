@@ -4,17 +4,51 @@ import { Button, Grid, CircularProgress, MenuItem } from '@material-ui/core';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 
-import { TextField, Select } from '../../../../packages/material-ui/lib';
+import {
+  TextField,
+  Select,
+  Autocomplete,
+} from '../../../../packages/material-ui/lib';
+import { AutocompleteOption } from '../../../../packages/material-ui/lib/Autocomplete/types';
 import { useRandomPerson } from './useRandomPerson';
 
-const FormWrapper = () => {
+const FormWrapper: React.FC = () => {
   const formRef = React.useRef<FormHandles>(null);
   const { loading, loadNewPerson } = useRandomPerson();
+  const [loadingCountries, setLoadingCountries] = React.useState(true);
+  const [countries, setCountries] = React.useState<AutocompleteOption[]>([]);
   const [data, setData] = React.useState({});
+
+  const loadCountries = React.useCallback(async () => {
+    setLoadingCountries(true);
+    try {
+      const response = await fetch('https://restcountries.eu/rest/v2/all');
+      const countriesData = await response.json();
+
+      const formatedCountries = countriesData.map(country => ({
+        label: `${country.name} - (${country.alpha2Code})`,
+        value: country.alpha2Code,
+      }));
+
+      setCountries(formatedCountries);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoadingCountries(false);
+  }, []);
+
+  React.useEffect(() => {
+    loadCountries();
+  }, [loadCountries]);
 
   const loadData = React.useCallback(async () => {
     const person = await loadNewPerson();
-    formRef.current?.setData({ ...person, yesno: 1, truefalse: true });
+
+    formRef.current?.setData({
+      ...person,
+      yesno: 1,
+      truefalse: true,
+    });
   }, [loadNewPerson]);
 
   return (
@@ -24,6 +58,8 @@ const FormWrapper = () => {
         onSubmit={formdata => setData(formdata)}
         initialData={{
           email: 'foo@bar.com',
+          countries: ['US', 'BR', 'JP'],
+          country: 'BR',
         }}
         id="formdata"
       >
@@ -36,18 +72,22 @@ const FormWrapper = () => {
               variant="outlined"
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField fullWidth name="name.last" label="Last Name" />
           </Grid>
+
           <Grid item xs={6}>
             <TextField fullWidth name="email" label="E-mail" />
           </Grid>
+
           <Grid item xs={6}>
             <Select name="gender" label="Gender" variant="outlined" fullWidth>
               <MenuItem value="male">Male</MenuItem>
               <MenuItem value="female">Female</MenuItem>
             </Select>
           </Grid>
+
           <Grid item xs={6}>
             <Select
               name="yesno"
@@ -59,6 +99,7 @@ const FormWrapper = () => {
               <MenuItem value={1}>1 - Yes</MenuItem>
             </Select>
           </Grid>
+
           <Grid item xs={6}>
             <Select
               name="truefalse"
@@ -69,6 +110,30 @@ const FormWrapper = () => {
               <MenuItem value={false}>False</MenuItem>
               <MenuItem value>True</MenuItem>
             </Select>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Autocomplete
+              id="country"
+              name="country"
+              label="Autocomplete Country"
+              noOptionsText="No Records Found"
+              options={countries}
+              loading={loadingCountries}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Autocomplete
+              id="countries"
+              name="countries"
+              label="Autocomplete Countries"
+              noOptionsText="No Records Found"
+              multiple
+              required
+              options={countries}
+              loading={loadingCountries}
+            />
           </Grid>
         </Grid>
       </Form>
