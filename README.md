@@ -8,7 +8,7 @@ This library uses [Unform](https://github.com/Rocketseat/unform) to integrate wi
 
 ## Integrations
 
-- [Material UI](packages/material-ui)
+- [Material UI](packages/mui)
 
 ## Contributing
 
