@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-import { Checkbox as BaseCheckbox } from '@material-ui/core';
+import { Checkbox as BaseCheckbox } from '@mui/material';
 import { useField } from '@unform/core';
 
 import { printWarning } from '../debug';

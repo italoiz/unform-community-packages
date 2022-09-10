@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-import { TextField as BaseTextField } from '@material-ui/core';
+import { TextField as BaseTextField } from '@mui/material';
 import { useField } from '@unform/core';
 
 import { printWarning } from '../debug';

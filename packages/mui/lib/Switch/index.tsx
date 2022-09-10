@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-import { Switch as BaseSwitch } from '@material-ui/core';
+import { Switch as BaseSwitch } from '@mui/material';
 import { useField } from '@unform/core';
 
 import { printWarning } from '../debug';

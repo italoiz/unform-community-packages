@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import React, { RefObject } from 'react';
 
-import { MenuItem } from '@material-ui/core';
+import { MenuItem } from '@mui/material';
 import { fireEvent, act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormHandles } from '@unform/core';

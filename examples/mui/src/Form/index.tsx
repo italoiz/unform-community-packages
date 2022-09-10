@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Button, Grid, CircularProgress, MenuItem } from '@material-ui/core';
+import { Button, Grid, CircularProgress, MenuItem } from '@mui/material';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 
-import { TextField, Select } from '../../../../packages/material-ui/lib';
+import { TextField, Select } from '../../../../packages/mui/lib';
 import { useRandomPerson } from './useRandomPerson';
 
 const FormWrapper = () => {

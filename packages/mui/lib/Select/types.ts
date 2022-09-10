@@ -1,4 +1,4 @@
-import { SelectProps as BaseSelectProps } from '@material-ui/core/Select/Select';
+import { SelectProps as BaseSelectProps } from '@mui/material/Select';
 
 export interface SelectOption {
   value: string | number;

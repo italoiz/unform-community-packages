@@ -11,7 +11,7 @@ import {
   FormControl,
   InputLabel,
   FormHelperText,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useField } from '@unform/core';
 
 import { printWarning } from '../debug';
